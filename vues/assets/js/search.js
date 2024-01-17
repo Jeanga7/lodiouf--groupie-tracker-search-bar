@@ -79,7 +79,18 @@ function closeSearch() {
     document.querySelector("#search-overlay").style.visibility = "hidden";
     document.querySelector("#search-overlay").style.backdropFilter = "blur(0px)";
     document.querySelector("#search-overlay").style.opacity = "0";
-    document.querySelector("#search-results").style.right = "-360px";
+
+     if (window.innerWidth > 1300) {
+        document.querySelector("#search-results").style.right = "-35%";
+    } else if (window.innerWidth > 1025) {
+        document.querySelector("#search-results").style.right = "-45%";
+    }  else if (window.innerWidth > 768) {
+        document.querySelector("#search-results").style.right = "-55%";
+    } else if (window.innerWidth > 480) {
+        document.querySelector("#search-results").style.right = "-85%";
+    }else{
+        document.querySelector("#search-results").style.right = "-105%";
+    }
 
     // Enable page scrollbar
     document.body.style.overflow = "auto";

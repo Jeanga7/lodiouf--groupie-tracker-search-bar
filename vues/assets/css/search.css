@@ -1,11 +1,11 @@
 #search-results {
-    background-color: white;
+    background-color: rgb(250, 250, 250);
     z-index: 999;
-    width: 350px;
+    width: 30%;
     height: 100vh;
     position: fixed;
     top: 0px;
-    right: -400px;
+    right: -30%;
     display: flex;
     flex-direction: column;
     transition: right 400ms ease-in-out 0s;
@@ -18,7 +18,7 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(0px);
     opacity: 0;
@@ -82,9 +82,8 @@
 }
 
 .search-body {
-    width: 80vw;
+    width: 90vw;
     height: 19vh;
-    /* background-color: rgb(241, 151, 151); */
     padding: 2px 8px;
     column-gap: 5px;
     flex-direction: row;
@@ -106,9 +105,9 @@
 
 .search-info {
     /* background-color: rgb(43, 226, 73); */
-    font-size: 0.55em;
+    font-size: 0.7em;
     height: 18vh;
-    width: 16.5vw;
+    width: 23%;
     box-sizing: border-box;
     border-radius: 8px;
     padding: 4px;
