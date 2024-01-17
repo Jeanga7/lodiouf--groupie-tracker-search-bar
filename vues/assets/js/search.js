@@ -18,7 +18,6 @@ document.querySelector("#input-search").addEventListener("keyup", function () {
 
 function showMatches() {
     let wanted = document.querySelector("#input-search").value;
-    // wanted = wanted.replace(/[^a-zA-Z0-9]/g, '');
     let resCount = 0;
 
     document.querySelectorAll(".search-info").forEach(el => {
@@ -95,3 +94,8 @@ function closeSearch() {
     // Enable page scrollbar
     document.body.style.overflow = "auto";
 }
+
+// document.querySelector(".suggest").addEventListener("click", function(){
+//     var target = this.getAttribute("tg");
+
+// });

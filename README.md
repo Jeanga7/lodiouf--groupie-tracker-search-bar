@@ -1,4 +1,4 @@
-# `PROJECT'S TITLE:`  🎧GROUPIE~TRACKER🎧
+# `PROJECT'S TITLE:`  🎧GROUPIE~TRACKER-SEARCH-BAR🎧
 
 ## `TABLE OF CONTENTS🎶`
 - [🎯 OBJECTIVES](#🎯objectives)
@@ -9,24 +9,26 @@
 - [👤AUTHORS](#👤authors)
 
 ## 🎯`OBJECTIVES:`
-__Groupie Trackers__ consists on receiving a given __API__ and manipulate the data contained in it, in order to create a site, displaying the information.
+Groupie tracker search bar consists of creating a functional program that searches, inside your website, for a specific text input. So the focus of this project is to create a way for the client to search a member or artist or any other attribute in the data system you made.
 
-It will be given an API, that consists in four parts:
+<!-- It will be given an API, that consists in four parts:
    - 📀Artists
    - 📍Locations
   -  🗓️Dates
   -  🎫Relation.
-
+ -->
   ## 📑`DESCRIPTION:`
- 
- Groupie tracker is an innovative website offering complete immersion in the musical universe of your favorite artists. Our project is based on a robust API, divided into four essential components:
-   - Artists: Explore detailed profiles featuring band member information, captivating images and early activity.
+- [x] The program  handle these search cases :
+      - [] artist/band name
+      - []  members
+      - [] locations
+      - [] first album date
+      - [] creation date
+- [x] The program handle search input as case-insensitive.
+- [x] The search bar  have typing suggestions as you write.
+       - [] The search bar identify and display in each suggestion the individual type of the search cases. (ex: japan -> location)
+      -  For example if you start writing "phil" it should appear as suggestions Phil Collins - member and Phil Collins - artist/band. This is just an example of a display.
 
-   - Locations: Discover locations of recent concerts and venues scheduled for upcoming performances.
-
-   - Dates : Don't miss any concert dates with our dedicated section for past and upcoming performances.
-
-   - Relations: Link artists, dates and locations for a complete music experience.
 ### 🛠️`FEATURES:`
 
 - Rich visualizations: explore the details through well-organized maps of your favorite artists
@@ -34,6 +36,19 @@ It will be given an API, that consists in four parts:
 -  User-friendly: An intuitive, interactive user interface makes navigation easy, providing a seamless experience for music fans.
 - Real-time updates: Enjoy instant updates on artists, venues and dates thanks to dynamic API integration.
 
+#### search features
+
+- [x] Opening the Search Bar :
+       - [] Click on the search icon represented by the magnifying glass
+  - [x]  Entering the Search :
+       - [] Once the search bar is open, start typing your query in the text box provided. 
+  - [x]  Viewing results :
+      - []  Search results will be displayed in real time as you type.
+  - [x]  Quick Navigation:
+      - []  Click on a result to be taken instantly to the corresponding section of the page. The search bar will close automatically.
+
+  - [x]  Closing the Search Bar :
+      - [] To close the search bar, click outside it or use the close button.
 
 ## 🧭`HOW_TO_RUN`
 ### 🐾`TO RUN IT:`

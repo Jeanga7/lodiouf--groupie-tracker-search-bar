@@ -12,6 +12,31 @@
     border-radius: 25px, 0px, 0px, 25px;
 }
 
+@media only screen and (min-width: 1025px) and (max-width: 1300px) {
+    #search-results {
+        width: 40%;
+        right: -40%;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #search-results {
+        width: 50%;
+        right: -50%;
+    }
+}
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+    #search-results {
+        width: 80%;
+        right: -80%;
+    }
+}
+@media only screen and (max-width: 480px)  {
+    #search-results {
+        width: 100%;
+        right: -100%;
+    }
+}
+
 #search-overlay {
     z-index: 998;
     position: fixed;
@@ -75,14 +100,14 @@
 
 #search-block-container {
     height: auto;
-    width: 100vw;
+    width: 100%;
     padding-bottom: 8px;
     display: block;
     overflow: auto;
 }
 
 .search-body {
-    width: 90vw;
+    width: 95%;
     height: 19vh;
     padding: 2px 8px;
     column-gap: 5px;
@@ -99,15 +124,15 @@
 .search-image {
     border-radius: 8px;
     height: 18vh;
-    width: 8vw;
+    width: 50%;
     border: 1px solid #ccc;
 }
 
 .search-info {
     /* background-color: rgb(43, 226, 73); */
-    font-size: 0.7em;
+    font-size: 0.8em;
     height: 18vh;
-    width: 23%;
+    width: 100%;
     box-sizing: border-box;
     border-radius: 8px;
     padding: 4px;
@@ -119,7 +144,7 @@
 }
 
 #suggestions {
-    z-index: 9999999;
+    z-index: 9999;
     width: 100vw;
     background-color: aquamarine;
     height: fit-content;
