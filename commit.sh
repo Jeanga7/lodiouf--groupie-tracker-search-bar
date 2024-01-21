@@ -1,3 +1,3 @@
 git add .
-git commit -m "Search result displaying HTML tags fixed now."
+git commit -m "Specific type search fixed."
 git push

@@ -15,13 +15,13 @@
             <div style="background-image:url('{{ .Image }}');background-size:cover;background-position: center center;" class="search-image"></div>
             <div class="search-info">
                 <p>
-                    <b>{{ .Name }} ({{ .CreationDate }}): </b> {{index .Members 0}}, 
-                    <b>First Album: </b>{{ .FirstAlbum }}, 
+                    <b><span class="artist">{{ .Name }}</span> (<span class="creation-date">{{ .CreationDate }}</span>): </b> <span class="members">{{index .Members 0}}</span>, 
+                    <b>First Album: </b><span class="first-album">{{ .FirstAlbum }}</span>, 
                     <b>Upcoming Concerts: </b> 
                     {{ range $locations, $dates := .Relations.DatesLocations  }}
-                        {{$locations}}: 
+                    <span class="locations">{{$locations}}</span>: 
                         {{ range $i, $date := $dates}}
-                            {{ $date}}, 
+                        <span class="concert-date">{{ $date}}</span>, 
                         {{ end }}
                     {{ end }}
                 </p>

@@ -21,37 +21,61 @@ function showMatches(){
     document.querySelectorAll(".search-info").forEach(el => {
         el.innerHTML = el.innerHTML.replaceAll('<strong class="found">', '');
         el.innerHTML = el.innerHTML.replaceAll('</strong>', '');
-    
-        var regex = new RegExp(`(?<!<[^>]*)${wanted}(?![^<]*>)`, "gi");
-        if (wanted.length > 0 && regex.test(el.textContent)) {
-            el.innerHTML = el.innerHTML.replace(regex, function(match){
-                return '<strong class="found">' + match + '</strong>';
-            })
-            el.parentElement.style.display = "flex";
-            resCount++;
+
+        var display = false;
+        if (containType(wanted)) {
+            let parts = wanted.split(" - ");
+            const typeClasses = {
+                "member" : "members",
+                "location" : "locations",
+                "artist/band" : "artist",
+                "creation-date" : "creation-date",
+                "concert-date" : "concert-date",
+                "first-album" : "first-album"
+            };
+            var regex = new RegExp(`(?<!<[^>]*)${parts[0]}(?![^<]*>)`, "gi");
+            var pos = el.querySelectorAll("."+typeClasses[parts[1]]);
+            pos.forEach(p => {
+                if (parts[0].length > 0 && regex.test(p.textContent)) {
+                    p.innerHTML = p.innerHTML.replaceAll(regex, function(match){
+                        return '<strong class="found">' + match + '</strong>';
+                    });
+                    display = true;
+                    resCount++;
+                }
+            });
         } else {
-            el.parentElement.style.display = "none";
+            var regex = new RegExp(`(?<!<[^>]*)${wanted}(?![^<]*>)`, "gi");
+            if (wanted.length > 0 && regex.test(el.textContent)) {
+                el.innerHTML = el.innerHTML.replaceAll(regex, function(match){
+                    return '<strong class="found">' + match + '</strong>';
+                })
+                display = true;
+                resCount++;
+            }
         }
+        el.parentElement.style.display = display ? "flex" : "none";
     });
     if (resCount != 0 || wanted.length == 0) {
         document.querySelector("#no-matches").style.display = "none";
     }else{
         document.querySelector("#no-matches").style.display = "block";
     }
- }
+}
+
 
  function containType(wanted) {
     let parts = wanted.split(" - ");
-    const types = ["member","location","artist","creation-date","relation","first-album"]
+    const types = ["member","location","artist/band","creation-date","concert-date","first-album"];
     if (parts.length == 2) {
         for (let i = 0; i < types.length; i++) {
             if (parts[1].indexOf(types[i]) != -1) {
-                return true
+                return true;
             }            
         }
-        return false
+        return false;
     } else {
-        return false
+        return false;
     }
  }
 
