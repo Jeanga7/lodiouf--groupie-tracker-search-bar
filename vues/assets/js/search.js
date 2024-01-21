@@ -22,8 +22,8 @@ function showMatches(){
         el.innerHTML = el.innerHTML.replaceAll('<strong class="found">', '');
         el.innerHTML = el.innerHTML.replaceAll('</strong>', '');
     
-        var regex = new RegExp(wanted, "gi");
-        if (wanted.length > 0 && regex.test(el.innerHTML)) {
+        var regex = new RegExp(`(?<!<[^>]*)${wanted}(?![^<]*>)`, "gi");
+        if (wanted.length > 0 && regex.test(el.textContent)) {
             el.innerHTML = el.innerHTML.replace(regex, function(match){
                 return '<strong class="found">' + match + '</strong>';
             })

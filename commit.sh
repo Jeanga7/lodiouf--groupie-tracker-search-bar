@@ -1,3 +1,3 @@
 git add .
-git commit -m "Project Updates"
+git commit -m "Search result displaying HTML tags fixed now."
 git push

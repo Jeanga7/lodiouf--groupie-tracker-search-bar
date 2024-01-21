@@ -89,18 +89,18 @@
 .search-image{
     border-radius: 8px;
     height: 18vh;
-    width: 8vw;
+    width: 100px;
     border: 1px solid #ccc;
 }
 
 .search-info {
     /* background-color: rgb(43, 226, 73); */
     font-size: 0.55em;
-    height: 18vh;
-    width: 16.5vw;
+    height: 18.5vh;
+    width: 220px;
     box-sizing: border-box;
     border-radius: 8px;
-    padding: 4px;
+    padding: 0 4px 2px 0;
     display: -webkit-box;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
