@@ -3,10 +3,23 @@
 <div id="search-overlay"></div>
 <div id="search-results">
     <form>
-        <div id="search-zone">
-            <input type="text" id="input-search" name="search" placeholder="Rechercher...">
-            <div id="close-search"><span>&times;</span></div>
-        </div>
+      <div id="search-zone">
+        <input type="text" id="input-search" name="search" placeholder="Rechercher..." list="suggestions">
+        <datalist id="suggestions">
+          {{ range .FinalArtists }}
+            <option value="{{ .Name }}">{{ .Name }} - artist/band</option>
+            <option value="{{ .CreationDate }}">{{ .CreationDate }} - creation-date</option>
+            <option value="{{ .FirstAlbum }}">{{ .FirstAlbum }} - first-album</option>
+            {{ range $locations, $dates := .Relations.DatesLocations  }}
+              <option value="{{$locations}}">{{$locations}} - location</option>
+              {{ range $i, $date := $dates}}
+                <option value="{{ $date }}">{{ $date }} - concert-date</option>
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        </datalist>
+        <div id="close-search"><span>&times;</span></div>
+      </div>
     </form>
     <div id="search-block-container">
         <span id="no-matches">No matches.</span>
