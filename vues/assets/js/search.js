@@ -40,6 +40,21 @@ function showMatches(){
     }
  }
 
+ function containType(wanted) {
+    let parts = wanted.split(" - ");
+    const types = ["member","location","artist","creation-date","relation","first-album"]
+    if (parts.length == 2) {
+        for (let i = 0; i < types.length; i++) {
+            if (parts[1].indexOf(types[i]) != -1) {
+                return true
+            }            
+        }
+        return false
+    } else {
+        return false
+    }
+ }
+
 // Acces to result element
 document.querySelectorAll(".search-body").forEach(el => {
     el.addEventListener("click", function (){
