@@ -1,3 +1,3 @@
 git add .
-git commit -m "Search bar responsivity done."
+git commit -m "Map integration."
 git push

@@ -321,3 +321,8 @@ body {
 .artist-members, .artist-firstAlbum, .artist-relations {
     display: none;
 }
+
+/* Map */
+#modal-map {
+    height: 200px;
+}
