@@ -10,6 +10,20 @@
     .artist-image {
         width: clamp(80px, 60%, 130px);
     }
+
+    /* Search bar */
+    #search-results {
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        z-index: 9999;
+    }
+    .search-image {
+        width: 40vw;
+    }
+    .search-info {
+        width: 55vw;
+    }
 }
 @media only screen and (min-width: 350px) {
     #artists-list {
