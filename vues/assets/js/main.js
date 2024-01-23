@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function(){
             openModal();
             
             // Géolocalisation
-            // displayMap(card);
+            displayMap(card);
         });
     });
     
@@ -80,29 +80,34 @@ document.addEventListener("DOMContentLoaded", function(){
     
     // ---------------------------------------------------------------------------
     // Geocoding function
-    function Geocoding(address) {
+    async function Geocoding(address) {
         var output = null;
         const token = "pk.2f226e3203c56af77056c10e939e3a0a";
         const settings = {
-            async: false,
+            async: true,
             crossDomain: true,
             url: 'https://us1.locationiq.com/v1/search?key='+token+'&q='+address+'&format=json&',
             method: 'GET'
         };
         
-        $.ajax(settings).done(function (response) {
-            output = {
-                lat : response[0].lat,
-                lon : response[0].lon
-            };
+        return new Promise((resolve, reject) => {
+            $.ajax(settings).done(function (response) {
+                output = {
+                    lat : response[0].lat,
+                    lon : response[0].lon
+                };
+                resolve(output);
+            }).fail(function (error) {
+                reject(error);
+            });
         });
-        return output;
     }
+    
 
     async function displayMap(card) {
         var places = card.querySelector(".artist-locations").getAttribute("data-location").replaceAll("[","").replaceAll("]","").split(" ");
-            
-        var coordinates = [];
+        
+        var coordinates = {};
         for (let p of places) {
             coordinates[p] = await Geocoding(p);
         }

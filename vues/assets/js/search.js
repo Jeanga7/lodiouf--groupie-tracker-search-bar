@@ -33,7 +33,7 @@ function showMatches(){
                 "concert-date" : "concert-date",
                 "first-album" : "first-album"
             };
-            var regex = new RegExp(`(?<!<[^>]*)${parts[0]}(?![^<]*>)`, "gi");
+            var regex = new RegExp(`(?<!<[^>]*)${escapeRegExp(parts[0])}(?![^<]*>)`, "gi");
             var pos = el.querySelectorAll("."+typeClasses[parts[1]]);
             pos.forEach(p => {
                 if (parts[0].length > 0 && regex.test(p.textContent)) {
@@ -45,7 +45,7 @@ function showMatches(){
                 }
             });
         } else {
-            var regex = new RegExp(`(?<!<[^>]*)${wanted}(?![^<]*>)`, "gi");
+            var regex = new RegExp(`(?<!<[^>]*)${escapeRegExp(wanted)}(?![^<]*>)`, "gi");
             if (wanted.length > 0 && regex.test(el.textContent)) {
                 el.innerHTML = el.innerHTML.replaceAll(regex, function(match){
                     return '<strong class="found">' + match + '</strong>';
@@ -63,6 +63,9 @@ function showMatches(){
     }
 }
 
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
 
  function containType(wanted) {
     let parts = wanted.split(" - ");

@@ -1,3 +1,3 @@
 git add .
-git commit -m "Map integration."
+git commit -m "Fix '.' search and async map"
 git push
