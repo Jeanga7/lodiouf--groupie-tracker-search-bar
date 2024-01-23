@@ -2,6 +2,8 @@ package gt
 
 import (
 	"errors"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -46,6 +48,7 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 		data.Dates = *endpoints["dates"].(*Date)
 		// data.Relations = RedableRelations(*endpoints["relation"].(*Relation))
 		data.Relations = *endpoints["relation"].(*Relation)
+		fmt.Println(Geocoding(strings.Join(UniqueCities(data.Locations.Index), ",")))
 
 		for _, val := range data.Artists {
 			// data.FinalArtists = append(data.FinalArtists, FinalArtist{val.Id, val.Image, val.Name, []string{strings.Join(val.Members, ", ")}, val.CreationDate, FormatDates([]string{val.FirstAlbum})[0], data.Locations.Index[val.Id-1], data.Dates.Index[val.Id-1], data.Relations.Index[val.Id-1]})
@@ -68,6 +71,38 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 		elapsed := time.Since(tStart)
 		log.Printf("Parsing took %.4fs\n", elapsed.Seconds())
 	}
+}
+
+func UniqueCities(i LocationIndex) []string {
+	var citiesBool = make(map[string]bool)
+	for _, loc := range i {
+		for _, city := range loc.Locations {
+			citiesBool[city] = true
+		}
+	}
+	var citiesList []string
+	for city := range citiesBool {
+		citiesList = append(citiesList, city)
+	}
+	return citiesList
+}
+
+func Geocoding(cities string) string {
+	url := "https://trueway-geocoding.p.rapidapi.com/Geocode?address=" + cities + "&language=en"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("X-RapidAPI-Key", "0fca6dcab2mshc493be6db351be8p13df6bjsne0859659b3c0")
+	req.Header.Add("X-RapidAPI-Host", "trueway-geocoding.p.rapidapi.com")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	// fmt.Println(res)
+	// fmt.Println(string(body))
+	return string(body)
 }
 
 func ErrorPage(err error, w http.ResponseWriter, code int) {

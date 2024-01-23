@@ -12,12 +12,14 @@ type Artist struct {
 	Relations    string   `json:"relations"`
 }
 
+type LocationIndex []struct {
+	Id        int      `json:"id"`
+	Locations []string `json:"locations"`
+	Dates     string   `json:"dates"`
+}
+
 type Location struct {
-	Index []struct {
-		Id        int      `json:"id"`
-		Locations []string `json:"locations"`
-		Dates     string   `json:"dates"`
-	} `json:"index"`
+	Index LocationIndex `json:"index"`
 }
 
 type Date struct {

@@ -1,3 +1,3 @@
 git add .
-git commit -m "Fix '.' search and async map"
+git commit -m "Geocoding in process"
 git push

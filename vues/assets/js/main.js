@@ -37,7 +37,9 @@ document.addEventListener("DOMContentLoaded", function(){
             openModal();
             
             // Géolocalisation
-            displayMap(card);
+            displayMap(card).then(function(){
+                document.querySelector("#modal-overlay").style.visibility = "hidden";
+            });
         });
     });
     
@@ -105,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
 
     async function displayMap(card) {
+        document.querySelector("#modal-overlay").style.visibility = "visible";
         var places = card.querySelector(".artist-locations").getAttribute("data-location").replaceAll("[","").replaceAll("]","").split(" ");
         
         var coordinates = {};
