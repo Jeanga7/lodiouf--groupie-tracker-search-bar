@@ -2,7 +2,6 @@ package gt
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -48,7 +47,7 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 		data.Dates = *endpoints["dates"].(*Date)
 		// data.Relations = RedableRelations(*endpoints["relation"].(*Relation))
 		data.Relations = *endpoints["relation"].(*Relation)
-		fmt.Println(Geocoding(strings.Join(UniqueCities(data.Locations.Index), ",")))
+		// fmt.Println(Geocoding(strings.Join(UniqueCities(data.Locations.Index), ",")))
 
 		for _, val := range data.Artists {
 			// data.FinalArtists = append(data.FinalArtists, FinalArtist{val.Id, val.Image, val.Name, []string{strings.Join(val.Members, ", ")}, val.CreationDate, FormatDates([]string{val.FirstAlbum})[0], data.Locations.Index[val.Id-1], data.Dates.Index[val.Id-1], data.Relations.Index[val.Id-1]})

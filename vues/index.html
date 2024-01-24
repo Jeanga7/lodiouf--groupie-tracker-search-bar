@@ -35,7 +35,7 @@
                 {{ range .FinalArtists }}
                 <div class="artist-card" id="card_{{.Id}}">
                     <div class="artist-top-box">
-                        <img src="{{ .Image }}" alt="{{ .Name }}" class="artist-image">
+                        <img src="{{ .Image }}" alt="{{ .Name }}" class="artist-image">{{$image := .Image}}
                         <span class="artist-name">{{ .Name }}</span>{{$artist := .Name}}
                     </div>
                     <div class="artist-bottom-box">
@@ -46,7 +46,7 @@
                         <span class="artist-relations">
                             <ul class="artist-concerts">
                                 {{ range $place, $dates := .Relations.DatesLocations }}
-                                <li class="concert-place" data-artist="{{$artist}}" data-place="{{ $place }}" data-dates="{{ $dates }}">
+                                <li class="concert-place" data-artist="{{$artist}}" data-place="{{ $place }}" data-dates="{{ $dates }}" data-image="{{ $image }}">
                                     <span>{{ $place }}</span> :
                                     <ul>
                                         {{ range $i, $date := $dates }}
@@ -101,12 +101,16 @@
                             <div id="modal-overlay">
                                 <div class="lds-ripple"><div></div><div></div></div>
                             </div>
+                            <span class="grow-map"><i class="fas fa-search"></i></span>
                         </div>
                     </div>
                 </div>
             </div>
             <span id="modal-close">&times;</span>
         </div>
+    </div>
+    <div id="big-map">
+        <span class="grow-map"><i class="fas fa-times"></i></span>
     </div>
     {{template "search_part" .}}
     

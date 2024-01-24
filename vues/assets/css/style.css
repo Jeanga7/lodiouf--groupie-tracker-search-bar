@@ -328,6 +328,18 @@ body {
     display: flex;
     position: relative;
 }
+#big-map {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 500ms ease-in-out;
+}
 
 #modal-overlay {
     position: absolute;
@@ -337,10 +349,38 @@ body {
     width: 100%;
     background-color: rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
-    z-index: 9999;
+    z-index: 9998;
     visibility: hidden;
     display: flex;
     transition: all 300ms ease-in-out;
+}
+.grow-map {
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 9990;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    display: flex;
+    transition: all 300ms ease-in-out;
+}
+.grow-map i {
+    margin: auto;
+}
+.grow-map:hover {
+    color: white;
+    background-color: black;
+}
+
+.map-picture {
+    border: 1px solid black;
+    height: 150px;
+    width: 150px;
+    border-radius: 8px;
 }
 
 

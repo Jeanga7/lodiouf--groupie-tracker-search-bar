@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+    var mapScaled = false;
     var modalImage = document.querySelector("#group-image");
     var modalInfos = document.querySelector("#group-infos");
  
@@ -19,6 +20,14 @@ document.addEventListener("DOMContentLoaded", function(){
     }).addTo(map);
     var markers = L.layerGroup().addTo(map);
 
+    // Initialisation de la grande carte
+    var bigMap = L.map('big-map').setView([0, 180], 0);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(bigMap);
+    var bigMarkers = L.layerGroup().addTo(bigMap);
+
     // Afficher le Modal
     var cards = document.querySelectorAll(".artist-card");
     cards.forEach(card => {
@@ -32,12 +41,32 @@ document.addEventListener("DOMContentLoaded", function(){
             document.querySelector("#modal-first_album").innerHTML = card.querySelector(".artist-firstAlbum").innerHTML;
             document.querySelector("#modal-concerts").innerHTML = card.querySelector(".artist-relations").innerHTML;
             // document.querySelector("#modal-map").innerHTML = card.querySelector(".artist-locations").getAttribute("data-location");
-            
+
+            var concertData = {};
+            // Get card concerts data
+            card.querySelectorAll(".concert-place").forEach(c => {
+                concertData.artist = c.getAttribute("data-artist");
+                concertData.imageLink = c.getAttribute("data-image");
+                var place = c.getAttribute("data-place");
+                if (!concertData.concerts) {
+                    concertData.concerts = [];                    
+                }
+                concertData.concerts.push({city: place, dates: goListToJSArray(c.getAttribute("data-dates"))});
+            });
+            // var villes = Object.keys(concertData.concerts).join("%2C");
+            // BulkGeocoding(villes).then(function(output){
+            //     console.log(output);
+            // }).catch(function(error){
+            //     console.error(error);
+            // });
+                    
+            console.log(concertData);
+
             // Affichange du modal
             openModal();
             
             // Géolocalisation
-            displayMap(card).then(function(){
+            displayMap(concertData).then(function(){
                 document.querySelector("#modal-overlay").style.visibility = "hidden";
             });
         });
@@ -54,6 +83,23 @@ document.addEventListener("DOMContentLoaded", function(){
             document.querySelector("#artists").scrollIntoView({behavior: 'smooth'});
         });
      });
+
+    var mapHeight, mapWidth;
+
+    // Grow map
+    document.querySelectorAll(".grow-map").forEach(function(b) {
+        b.addEventListener("click", function() {
+            if (!mapScaled) {
+                document.querySelector("#big-map").style.opacity = "1";
+                document.querySelector("#big-map").style.visibility = "visible";
+                mapScaled = true;
+            } else {
+                document.querySelector("#big-map").style.opacity = "0";
+                document.querySelector("#big-map").style.visibility = "hidden";
+                mapScaled = false;
+            }
+        })
+    });
      
 
 
@@ -96,7 +142,8 @@ document.addEventListener("DOMContentLoaded", function(){
             $.ajax(settings).done(function (response) {
                 output = {
                     lat : response[0].lat,
-                    lon : response[0].lon
+                    lon : response[0].lon,
+                    name : response[0].display_name,
                 };
                 resolve(output);
             }).fail(function (error) {
@@ -104,27 +151,67 @@ document.addEventListener("DOMContentLoaded", function(){
             });
         });
     }
+
+    /*
+    async function BulkGeocoding(adresses) {
+        var output = null;
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://trueway-geocoding.p.rapidapi.com/Geocode?address='+adresses+'&language=en',
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '0fca6dcab2mshc493be6db351be8p13df6bjsne0859659b3c0',
+                'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com'
+            }
+        };
+        
+        return new Promise((resolve, reject) => {
+            $.ajax(settings).done(function (response) {
+                resolve(response);
+            }).fail(function (error) {
+                reject(error);
+            });
+        });
+    }
+    */
     
 
-    async function displayMap(card) {
+    async function displayMap(concertData) {
         document.querySelector("#modal-overlay").style.visibility = "visible";
-        var places = card.querySelector(".artist-locations").getAttribute("data-location").replaceAll("[","").replaceAll("]","").split(" ");
         
-        var coordinates = {};
-        for (let p of places) {
-            coordinates[p] = await Geocoding(p);
+        var infos = {};
+        for (let p of concertData.concerts) {
+            if (!infos[p.city]) {
+                infos[p.city] = {};
+            }
+            infos[p.city].coords = await Geocoding(p.city);
+            infos[p.city].dates = p.dates;
+            infos[p.city].artist = concertData.artist;
+            infos[p.city].imageLink = concertData.imageLink;
         }
 
         // Vider les marqueurs
         markers.clearLayers();
+        bigMarkers.clearLayers();
 
         var allMarkers = [];
 
         // Ajouter les marqueurs à la carte
-        for (var name in coordinates) {
-            if (coordinates.hasOwnProperty(name)){
-                var c = coordinates[name];
-                var marker = L.marker([c.lat, c.lon]).addTo(markers).bindPopup(name);
+        for (var el in infos) {
+            if (infos.hasOwnProperty(el)){
+                var c = infos[el].coords;
+                var txt = '<img class="map-picture" src="'+infos[el].imageLink+'"><br>';
+                txt += '<b>Artist: </b>'+infos[el].artist+'<br>';
+                txt += '<b>City: </b>'+el+'<br>';
+                txt += '<b>Dates: </b><br><ul>';
+                infos[el].dates.forEach(d=>{
+                    txt += '<li>'+d+'</li>';
+                });
+                txt += '</ul>';
+
+                L.marker([c.lat, c.lon]).addTo(bigMarkers).bindPopup(txt);
+                var marker = L.marker([c.lat, c.lon]).addTo(markers).bindPopup(txt);
                 allMarkers.push(marker);
             }
         }
@@ -140,6 +227,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
         // Ajustez la vue de la carte pour inclure toutes les limites
         map.fitBounds(bounds);
+        bigMap.fitBounds(bounds);
+    }
+
+    function goListToJSArray(txt) {
+        return txt.replaceAll("[","").replaceAll("]","").split(" ");
     }
  
  });
