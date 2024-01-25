@@ -11,7 +11,7 @@ document.querySelectorAll("#search-overlay, #close-search").forEach(el => {
 });
 
 // Show results
-document.querySelector("#input-search").addEventListener("keyup", function(){
+document.querySelector("#input-search").addEventListener("input", function(){
     showMatches();
 });
 

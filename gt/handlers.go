@@ -2,6 +2,7 @@ package gt
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -49,6 +50,13 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 		data.Relations = *endpoints["relation"].(*Relation)
 		// fmt.Println(Geocoding(strings.Join(UniqueCities(data.Locations.Index), ",")))
 
+		
+		for _, lot := range ChunkCities(UniqueCities(data.Locations.Index)) {
+			for _, v := range lot {
+				Geocoding(v)
+			}
+		}
+
 		for _, val := range data.Artists {
 			// data.FinalArtists = append(data.FinalArtists, FinalArtist{val.Id, val.Image, val.Name, []string{strings.Join(val.Members, ", ")}, val.CreationDate, FormatDates([]string{val.FirstAlbum})[0], data.Locations.Index[val.Id-1], data.Dates.Index[val.Id-1], data.Relations.Index[val.Id-1]})
 			data.FinalArtists = append(data.FinalArtists, FinalArtist{val.Id, val.Image, val.Name, []string{strings.Join(val.Members, ", ")}, val.CreationDate, val.FirstAlbum, data.Locations.Index[val.Id-1], data.Dates.Index[val.Id-1], data.Relations.Index[val.Id-1]})
@@ -72,6 +80,20 @@ func HandlePage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func ChunkCities(a []string) [][]string {
+	var ch = 5
+	var CitiesSlice []string
+	result := make([][]string, 0, len(a)/ch)
+	for len(a) >= ch {
+		CitiesSlice, a = a[:ch], a[ch:]
+		result = append(result, CitiesSlice)
+	}
+	if len(a) > 0 {
+		result = append(result, a[:])
+	}
+	return result
+}
+
 func UniqueCities(i LocationIndex) []string {
 	var citiesBool = make(map[string]bool)
 	for _, loc := range i {
@@ -88,7 +110,7 @@ func UniqueCities(i LocationIndex) []string {
 
 func Geocoding(cities string) string {
 	url := "https://trueway-geocoding.p.rapidapi.com/Geocode?address=" + cities + "&language=en"
-
+	fmt.Println("url", url)
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("X-RapidAPI-Key", "0fca6dcab2mshc493be6db351be8p13df6bjsne0859659b3c0")

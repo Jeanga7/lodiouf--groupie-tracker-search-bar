@@ -43,17 +43,21 @@ document.addEventListener("DOMContentLoaded", function(){
             // document.querySelector("#modal-map").innerHTML = card.querySelector(".artist-locations").getAttribute("data-location");
 
             var concertData = {};
+            var concertPlacesFound = [];
             // Get card concerts data
             card.querySelectorAll(".concert-place").forEach(c => {
                 concertData.artist = c.getAttribute("data-artist");
                 concertData.imageLink = c.getAttribute("data-image");
                 var place = c.getAttribute("data-place");
+                concertPlacesFound[place] = true;
                 if (!concertData.concerts) {
                     concertData.concerts = [];                    
                 }
                 concertData.concerts.push({city: place, dates: goListToJSArray(c.getAttribute("data-dates"))});
             });
-            // var villes = Object.keys(concertData.concerts).join("%2C");
+            var villes = Object.keys(concertPlacesFound);
+
+            BackEndGeocoding(villes);
             // BulkGeocoding(villes).then(function(output){
             //     console.log(output);
             // }).catch(function(error){
@@ -128,7 +132,34 @@ document.addEventListener("DOMContentLoaded", function(){
     
     // ---------------------------------------------------------------------------
     // Geocoding function
-    async function Geocoding(address) {
+    async function BackEndGeocoding() {
+        var output = null;
+        const token = "pk.2f226e3203c56af77056c10e939e3a0a";
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://us1.locationiq.com/v1/search?key='+token+'&q='+address+'&format=json&',
+            method: 'GET'
+        };
+        
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "/geocoding", 
+                type: "GET",
+                data: {
+                    address: "your address here" // replace with the actual address
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });;
+        });
+    }
+
+   /*  async function Geocoding(address) {
         var output = null;
         const token = "pk.2f226e3203c56af77056c10e939e3a0a";
         const settings = {
@@ -150,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 reject(error);
             });
         });
-    }
+    } */
 
     /*
     async function BulkGeocoding(adresses) {

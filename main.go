@@ -10,6 +10,7 @@ import (
 func main() {
 	port := ":8080"
 	http.HandleFunc("/", gt.HandlePage)
+	// http.HandleFunc("/geocoding", gt.GeocodingHandler)
 
 	// Create MUX Routing
 	fs := http.FileServer(http.Dir("./vues/assets/"))
