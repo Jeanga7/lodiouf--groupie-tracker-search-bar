@@ -1,3 +1,3 @@
 git add .
-git commit -m "Map fullscreen and city concerts infos done."
-git push
+git commit -m "Update search bar files"
+git push -f
