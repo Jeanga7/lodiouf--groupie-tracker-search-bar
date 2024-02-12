@@ -53,14 +53,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
                 concertData.concerts.push({city: place, dates: goListToJSArray(c.getAttribute("data-dates"))});
             });
-            // var villes = Object.keys(concertData.concerts).join("%2C");
-            // BulkGeocoding(villes).then(function(output){
-            //     console.log(output);
-            // }).catch(function(error){
-            //     console.error(error);
-            // });
-                    
-            console.log(concertData);
 
             // Affichange du modal
             openModal();
@@ -82,9 +74,7 @@ document.addEventListener("DOMContentLoaded", function(){
         element.addEventListener("click", function(){
             document.querySelector("#artists").scrollIntoView({behavior: 'smooth'});
         });
-     });
-
-    var mapHeight, mapWidth;
+    });
 
     // Grow map
     document.querySelectorAll(".grow-map").forEach(function(b) {
@@ -128,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     // ---------------------------------------------------------------------------
     // Geocoding function
-    async function Geocoding(address) {
+/*     async function Geocoding(address) {
         var output = null;
         const token = "pk.2f226e3203c56af77056c10e939e3a0a";
         const settings = {
@@ -150,7 +140,31 @@ document.addEventListener("DOMContentLoaded", function(){
                 reject(error);
             });
         });
+    } */
+
+    async function FetchCoords(city) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "POST",
+                url: "/coords",
+                data: {
+                    ville: city
+                },
+                success: function(result){
+                    let output = {
+                        lat : result.lat,
+                        lon : result.lon,
+                        name : result.display_name,
+                    };
+                    resolve(output);
+                },
+                error: function(error){
+                    reject('Erreur :', error);
+                }
+            });
+        });
     }
+    
 
     /*
     async function BulkGeocoding(adresses) {
@@ -185,18 +199,21 @@ document.addEventListener("DOMContentLoaded", function(){
             if (!infos[p.city]) {
                 infos[p.city] = {};
             }
-            infos[p.city].coords = await Geocoding(p.city);
+            
+            await FetchCoords(p.city).then(function(res){
+                infos[p.city].coords = res;
+            });
             infos[p.city].dates = p.dates;
             infos[p.city].artist = concertData.artist;
             infos[p.city].imageLink = concertData.imageLink;
         }
-
+        
         // Vider les marqueurs
         markers.clearLayers();
         bigMarkers.clearLayers();
-
+        
         var allMarkers = [];
-
+        
         // Ajouter les marqueurs à la carte
         for (var el in infos) {
             if (infos.hasOwnProperty(el)){

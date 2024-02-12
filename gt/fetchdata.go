@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-var endpoints = map[string]interface{}{
+var Endpoints = map[string]interface{}{
 	"artists":   &[]Artist{},
 	"locations": &Location{},
 	"dates":     &Date{},
@@ -17,7 +17,7 @@ func Parse(w http.ResponseWriter) {
 	var wg sync.WaitGroup
 	ch := make(chan string)
 
-	for endpoint, data := range endpoints {
+	for endpoint, data := range Endpoints {
 		wg.Add(1)
 		go func(endpoint string, data interface{}) {
 			defer wg.Done()
@@ -50,7 +50,7 @@ func Parse(w http.ResponseWriter) {
 		close(ch)
 	}()
 	// Attente que toutes les goroutines aient signalé la fin via le canal
-	for range endpoints {
+	for range Endpoints {
 		<-ch
 	}
 }

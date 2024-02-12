@@ -10,6 +10,11 @@ import (
 func main() {
 	port := ":8080"
 	http.HandleFunc("/", gt.HandlePage)
+	http.HandleFunc("/coords", gt.HandleCoordinates)
+
+	var locations gt.Location
+	gt.GetLocations(&locations)
+	gt.StoreCoordsData(gt.UniqueCities(locations.Index))
 
 	// Create MUX Routing
 	fs := http.FileServer(http.Dir("./vues/assets/"))

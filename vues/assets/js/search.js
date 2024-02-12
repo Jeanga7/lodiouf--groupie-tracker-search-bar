@@ -11,7 +11,7 @@ document.querySelectorAll("#search-overlay, #close-search").forEach(el => {
 });
 
 // Show results
-document.querySelector("#input-search").addEventListener("keyup", function(){
+document.querySelector("#input-search").addEventListener("input", function(){
     showMatches();
 });
 
@@ -103,7 +103,9 @@ function openSearch() {
 }
 
 function goToCard(id){
-    document.querySelector("#card_"+id).scrollIntoView({behavior: 'smooth'});
+    setTimeout(() => {
+        document.querySelector("#card_"+id).scrollIntoView({behavior: 'smooth'});
+    }, 0);
 }
 
 function openModal(id) {

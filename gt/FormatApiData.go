@@ -23,7 +23,6 @@ func TransformMap(m map[string][]string) map[string][]string {
 
 	for i, val := range m {
 		newMap[VillePays(i)] = FormatDates(val)
-
 	}
 
 	return newMap
